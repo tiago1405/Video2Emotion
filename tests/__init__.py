@@ -1,0 +1,1 @@
+"""Unit tests for the Video2Emotion pipeline."""
