@@ -210,7 +210,7 @@ docker-compose up
 
 ### Custom Docker Command
 
-Can also add a command to `docker-compose.yml` to automatically run the pipeline with your variables. For example:
+You can also add a command to `docker-compose.yml` to automatically run the pipeline with your variables when using `docker-compose up`. For example:
 ```yaml
 command: >
   --input_dir=/app/videos
@@ -265,6 +265,7 @@ A comprehensive report containing:
 - SFace
 
 ## Tests
+Unit tests are in the `/tests/` directory. These can be run using:
 ```bash
 # With pytest (recommended)
 pip install pytest pytest-cov
@@ -273,6 +274,7 @@ pytest tests/ -v
 # Or via unittest
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
+Tests also run automatically through Git workflows as part of CI/CD on code commits.
 
 <!--
 ## Troubleshooting
@@ -300,6 +302,8 @@ python -m unittest discover -s tests -p "test_*.py" -v
 
 [Add contribution guidelines here]
  -->
-## Citation
+## References
 
-If you use this tool in your research, please cite DeepFace: https://github.com/serengil/deepface
+- S. Serengil and A. Ozpinar, "A Benchmark of Facial Recognition Pipelines and Co-Usability Performances of Modules," *Journal of Information Technologies*, vol. 17, no. 2, pp. 95-107, 2024.
+- S. I. Serengil and A. Ozpinar, "LightFace: A Hybrid Deep Face Recognition Framework," *2020 Innovations in Intelligent Systems and Applications Conference (ASYU)*, 2020, pp. 23-27.
+- S. I. Serengil and A. Ozpinar, "HyperExtended LightFace: A Facial Attribute Analysis Framework," *2021 International Conference on Engineering and Emerging Technologies (ICEET)*, 2021, pp. 1-4.
