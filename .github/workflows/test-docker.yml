@@ -19,15 +19,4 @@ jobs:
     
     - name: Run tests in Docker
       run: |
-        docker run --name test-container video2emotion:test python -m pytest tests/ -v --junit-xml=test-results.xml
-    
-    - name: Copy test results from container
-      run: |
-        docker cp test-container:/app/test-results.xml ./test-results.xml
-      if: always()
-    
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: test-results.xml
+        docker run video2emotion:test python -m pytest tests/ -v
