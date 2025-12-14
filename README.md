@@ -208,11 +208,22 @@ python main.py \
 docker-compose up
 ```
 
-### Custom Docker Command
+### Connecting to the container
+To connect to the container and run code from within the container I reccomend you execute:
+```bash
+# Start container in the background
+docker-compose up -d
+# Find the CONTAINER_ID 
+docker ps
+# Connect to the bash shell using the CONTAINER_ID 
+docker exec -it <<CONTAINER_ID>> /bin/bash
+```
 
+### Custom Docker Command
 You can also add a command to `docker-compose.yml` to automatically run the pipeline with your variables when using `docker-compose up`. For example:
 ```yaml
-command: >
+command: > 
+  python main.py
   --input_dir=/app/videos
   --frames_dir=/app/frames
   --output_dir=/app/output

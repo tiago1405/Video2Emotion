@@ -9,11 +9,18 @@ outputs results as either multiple CSVs or one large CSV.
 import os
 import sys
 import getopt
-import warnings
 import pandas as pd
 
+# Suppress TensorFlow logging
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+# Disable oneDNN messages
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0' 
 # Suppress warnings
+import warnings
 warnings.filterwarnings('ignore')
+
+import logging
+logging.getLogger('deepface').setLevel(logging.ERROR)
 
 from utils.system_utils import process_dir
 from video2emo import analyze_directory
@@ -74,27 +81,27 @@ def main(input_dir: str,
     # Collect all dataframes for statistics
     df_out_list = []
 
-    # if len(video_dirs) > 1:
-    #     for video_dir in video_dirs:
-    #         video_dir_path = os.path.join(input_dir, video_dir)
-    #         process_dir(videos_dir=video_dir_path, 
-    #                     every_n=every_n,
-    #                     time_or_frames=time_or_frames, 
-    #                     output_dir=frames_dir,
-    #                     videos_ext=file_ext)
-    #         if verbose:
-    #             print(f"Completed processing of {video_dir}")
-    # elif video_dirs == []:
-    #     process_dir(videos_dir=input_dir, 
-    #                     every_n=every_n,
-    #                     time_or_frames=time_or_frames, 
-    #                     output_dir=frames_dir,
-    #                     videos_ext=file_ext)
-    #     if verbose:
-    #         print(f"Completed processing of {input_dir}")
-    # else:
-    #     print(f"Couldn't find any input directory(ies) at {input_dir}. Please verify and try again.")
-    #     return None
+    if len(video_dirs) > 1:
+        for video_dir in video_dirs:
+            video_dir_path = os.path.join(input_dir, video_dir)
+            process_dir(videos_dir=video_dir_path, 
+                        every_n=every_n,
+                        time_or_frames=time_or_frames, 
+                        output_dir=frames_dir,
+                        videos_ext=file_ext)
+            if verbose:
+                print(f"Completed processing of {video_dir}")
+    elif video_dirs == []:
+        process_dir(videos_dir=input_dir, 
+                        every_n=every_n,
+                        time_or_frames=time_or_frames, 
+                        output_dir=frames_dir,
+                        videos_ext=file_ext)
+        if verbose:
+            print(f"Completed processing of {input_dir}")
+    else:
+        print(f"Couldn't find any input directory(ies) at {input_dir}. Please verify and try again.")
+        return None
     
     dirs_to_analyze = [d for d in os.listdir(frames_dir) if os.path.isdir(os.path.join(frames_dir, d))]
 
@@ -171,7 +178,7 @@ def main(input_dir: str,
 if __name__ == "__main__":
     args = sys.argv[1:]
     options = "hv"
-    long_options = ["fm_frames", "fm_people", "verbose", "multi_csv", "index", "save_emo_frames", "emo_frames_path=",
+    long_options = ["fm_frames", "fm_people", "verbose", "help", "multi_csv", "index", "save_emo_frames", "emo_frames_path=",
                     "fm_model=", "mode=", "face_img_path=", "frames_dir=", "output_dir=", 
                     "input_dir=", "every_n=", "time_or_frames=", "file_ext=",
                     "generate_stats", "stats_format="]
@@ -204,11 +211,11 @@ if __name__ == "__main__":
     
     for opt, arg in opts:
         match opt:
-            case "-h":
+            case "-h" | "--help":
                 print("Usage: script.py [options]")
                 print("Options:")
-                print("  -h                    Show this help message")
-                print("  -v                    Verbose mode")
+                print("  -h | --help           Show this help message")
+                print("  -v | --verbose        Verbose mode")
                 print("  --input_dir=          Input directory containing videos (default: ./videos)")
                 print("  --frames_dir=         Output directory for frames (default: ./frames)")
                 print("  --output_dir=         Output directory for results (default: ./)")
@@ -227,7 +234,7 @@ if __name__ == "__main__":
                 print("  --generate_stats      Generate statistics reports (default: False)")
                 print("  --stats_format=       Statistics format: csv, json, or console (default: csv)")
                 sys.exit(0)
-            case "-v":
+            case "-v" | "--verbose":
                 verbose = True
             case "--input_dir":
                 input_dir = arg

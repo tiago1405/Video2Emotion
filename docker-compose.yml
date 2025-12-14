@@ -1,22 +1,12 @@
-# docker-compose.yml
-version: '1.0'
-
 services:
   video2emotion:
     build: .
     volumes:
-      - ./videos:/app/videos
-      - ./frames:/app/frames
-      - ./output:/app/output
+      - .:/app
     environment:
       - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
     
     # Example command - override with your own
-    # command: >
-    #   --input_dir=/app/videos
-    #   --frames_dir=/app/frames
-    #   --output_dir=/app/output
-    #   --every_n=1.0
-    #   --time_or_frames=frames
-    #   --file_ext=.mp4
-    #   --multi_csv=False
+    # command: python main.py --input_dir=/app/videos --frames_dir=/app/frames --output_dir=/app/output
