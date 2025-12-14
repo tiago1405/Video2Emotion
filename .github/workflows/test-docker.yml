@@ -1,0 +1,22 @@
+# .github/workflows/docker-test.yml
+name: Docker Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: docker build -t video2emotion:test .
+    
+    - name: Run tests in Docker
+      run: |
+        docker run video2emotion:test python -m pytest tests/ -v
