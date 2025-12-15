@@ -191,8 +191,8 @@ python main.py \
 | `--file_ext` | Video file extension to process | .mp4 |
 | `--mode` | Analysis mode | deepface |
 | `--fm_model` | Face matching model | Facenet512 |
-| `--fm_frames` | Enable face matching across frames | False |
-| `--fm_people` | Enable face tracking across frames | False |
+| `--fm_frames` | Enable finding frames by matching the faces in the frame to (a) reference image(s) | False |
+| `--fm_people` | Enable tracking the same face(s) across frames using a face_id value | False |
 | `--face_img_path` | Path to reference face image | None |
 | `--multi_csv` | Output separate CSV per video | True |
 | `--index` | Include index in CSV output | False |
